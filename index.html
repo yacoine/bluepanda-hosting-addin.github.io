@@ -22,7 +22,7 @@
             document.getElementById("helloButton").onclick = sayHello;
         }
         //var item = Office.cast.item.toItemRead(Office.context.mailbox.item);
-        console.log("PRINT OUT");
+        //console.log("PRINT OUT");
     });
 
     /**
@@ -31,7 +31,7 @@
     function sayHello() {
         
         Office.context.mailbox.item.body.setAsync(
-            "Hello this is BluePanda your AI assistant!",
+            "Hello this is BluePanda your AI assistant! XXXX",
             {
                 coercionType: "html", // Write text as HTML
             },
