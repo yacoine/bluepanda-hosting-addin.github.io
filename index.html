@@ -27,6 +27,8 @@
      * Writes 'Hello world!' to a new message body.
      */
     function sayHello() {
+        var item = Office.cast.item.toItemRead(Office.context.mailbox.item);
+        console.log(item)
         Office.context.mailbox.item.body.setAsync(
             "Hello this is BluePanda your AI assistant!",
             {
