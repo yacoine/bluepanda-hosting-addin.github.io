@@ -1,1 +1,0 @@
-# bluepanda-hosting-addin.github.io
