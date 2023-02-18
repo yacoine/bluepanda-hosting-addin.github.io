@@ -8,8 +8,11 @@
 </head>
 
 <body>
-    <p>This add-in will insert the text 'Hello world!' in a new message XX.</p>
+    <p>This add-in will insert the text 'Hello world!' in a new message XTX.</p>
     <button id="helloButton">Say hello</button>
+    
+    <p>Read messages.</p>
+    <button id="printM">Say hello</button>
 
     <!-- The following image URL tracks diagnostic data for this sample add-in. Please remove the image tag if you reuse this sample in your own code project. -->
     <img src="https://pnptelemetry.azurewebsites.net/pnp-officeaddins/samples/outlook-add-in-hello-world-run" />
@@ -20,6 +23,7 @@
     Office.onReady((info) => {
         if (info.host === Office.HostType.Outlook) {
             document.getElementById("helloButton").onclick = sayHello;
+            document.getElementById("printM").onclick = printM;
         }
         //var item = Office.cast.item.toItemRead(Office.context.mailbox.item);
         //console.log("PRINT OUT");
@@ -28,6 +32,9 @@
     /**
      * Writes 'Hello world!' to a new message body.
      */
+    function printM(){
+        alert("Conquer the world !");
+    }
     function sayHello() {
         
         Office.context.mailbox.item.body.setAsync(
