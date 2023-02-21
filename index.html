@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <p>This add-in will insert the text 'Hello world!' in a new message XTX.</p>
+    <p>This add-in will insert the text 'Hello world!' in a new message V1.</p>
     <button id="helloButton">Say hello</button>
     
     
@@ -18,6 +18,7 @@
 </body>
 
 <script>
+    /*
     Office.initialize = function() {
   // Wait for the DOM to be loaded
       $(document).ready(function() {
@@ -32,7 +33,7 @@
         });
       });
     };
-
+*/
     Office.onReady((info) => {
         if (info.host === Office.HostType.Outlook) {
             document.getElementById("helloButton").onclick = sayHello;
@@ -47,7 +48,8 @@
      */
  
     function sayHello() {
-        var message = Office.context.mailbox.item;
+    /*    
+    var message = Office.context.mailbox.item;
     message.subject.setAsync("Hello from my add-in!");
 
     // Set the recipients of the message
@@ -71,7 +73,7 @@
         console.log("Error sending message: " + asyncResult.error.message);
       }
     });
-        
+      */  
         Office.context.mailbox.item.body.setAsync(
             "Hello this is BluePanda your AI assistant!",
             {
