@@ -73,30 +73,12 @@
       var subject = "Hello from my add-in!";
       var body = "This is a test email sent from my add-in.";
 
-      // Create a new message
-      var message = Office.context.mailbox.item;
-      message.subject.setAsync(subject);
-
-      // Set the recipient of the message
-      var recipients = [
-        {
-          emailAddress: {
-            address: recipient
-          }
-        }
-      ];
-      message.to.setAsync(recipients);
-
-      // Set the body of the message
-      message.body.setAsync(body);
-
-      // Send the message
-      message.send(function(asyncResult) {
-        if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
-          console.log("Message sent successfully");
-        } else {
-          console.log("Error sending message: " + asyncResult.error.message);
-        }
+          // Create a new message
+          // Create a new message
+      Office.context.mailbox.displayNewMessageForm({
+        toRecipients: [recipient],
+        subject: subject,
+        body: body
       });
     }
 
