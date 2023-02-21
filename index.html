@@ -36,8 +36,8 @@
 */
     Office.onReady((info) => {
         if (info.host === Office.HostType.Outlook) {
-            document.getElementById("helloButton").onclick = sayHello;
-         
+            //document.getElementById("helloButton").onclick = sayHello;
+            document.getElementById("helloButton").onclick = sendEmail("y.acoine@gmail.com","Add in Test","Hey this is BluePanda");
         }
         //var item = Office.cast.item.toItemRead(Office.context.mailbox.item);
         //console.log("PRINT OUT");
@@ -48,32 +48,7 @@
      */
  
     function sayHello() {
-    /*    
-    var message = Office.context.mailbox.item;
-    message.subject.setAsync("Hello from my add-in!");
-
-    // Set the recipients of the message
-    var recipients = [
-      {
-        emailAddress: {
-          address: "y.acoine@gmail.com"
-        }
-      }
-    ];
-    message.to.setAsync(recipients);
-
-    // Set the body of the message
-    message.body.setAsync("This is a test message sent from my add-in.");
-
-    // Send the message
-    message.send(function(asyncResult) {
-      if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
-        console.log("Message sent successfully");
-      } else {
-        console.log("Error sending message: " + asyncResult.error.message);
-      }
-    });
-      */  
+  
         Office.context.mailbox.item.body.setAsync(
             "Hello this is BluePanda your AI assistant!",
             {
@@ -89,6 +64,40 @@
             }
         );
     }
+    
+    function sendEmail(recipient, subject, body) {
+      Office.initialize = function() {
+        // Wait for the DOM to be loaded
+        $(document).ready(function() {
+          // Create a new message
+          var message = Office.context.mailbox.item;
+          message.subject.setAsync(subject);
+
+          // Set the recipients of the message
+          var recipients = [
+            {
+              emailAddress: {
+                address: recipient
+              }
+            }
+          ];
+          message.to.setAsync(recipients);
+
+          // Set the body of the message
+          message.body.setAsync(body);
+
+          // Send the message
+          message.send(function(asyncResult) {
+            if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
+              console.log("Message sent successfully");
+            } else {
+              console.log("Error sending message: " + asyncResult.error.message);
+            }
+          });
+        });
+  };
+}
+
 
 </script>
 
