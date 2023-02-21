@@ -8,9 +8,11 @@
 </head>
 
 <body>
-    <p>This add-in will insert the text 'Hello world!' in a new message V3.</p>
+    <p>This add-in will insert the text 'Hello world!' in a new message V4.</p>
     <button id="helloButton">Say hello</button>
     
+    <p>This add-in will send a new message V1.</p>
+    <button id="send-email-button">Send Email</button>
     
 
     <!-- The following image URL tracks diagnostic data for this sample add-in. Please remove the image tag if you reuse this sample in your own code project. -->
@@ -36,13 +38,8 @@
 */
     Office.onReady((info) => {
         if (info.host === Office.HostType.Outlook) {
-            //document.getElementById("helloButton").onclick = sayHello;
-            document.getElementById("helloButton").onclick = createEvent("Meeting with BP",
-                                              "2023-03-01T10:00:00.000Z",
-                                              "2023-03-01T11:00:00.000Z",
-                                              "Conference Room 1",
-                                              ["yassineacoine@bluepanda.chat"]
-                                            );
+            document.getElementById("helloButton").onclick = sayHello;
+
         }
         //var item = Office.cast.item.toItemRead(Office.context.mailbox.item);
         //console.log("PRINT OUT");
@@ -70,82 +67,43 @@
         );
     }
     
-    function sendEmail(recipient, subject, body) {
-      Office.initialize = function() {
-        // Wait for the DOM to be loaded
-        $(document).ready(function() {
-          // Create a new message
-          var message = Office.context.mailbox.item;
-          message.subject.setAsync(subject);
+   function sendEmailOnClick() {
+      // Define the recipient, subject, and body of the email
+      var recipient = "y.acoine@gmail.com";
+      var subject = "Hello from my add-in!";
+      var body = "This is a test email sent from my add-in.";
 
-          // Set the recipients of the message
-          var recipients = [
-            {
-              emailAddress: {
-                address: recipient
-              }
-            }
-          ];
-          message.to.setAsync(recipients);
+      // Create a new message
+      var message = Office.context.mailbox.item;
+      message.subject.setAsync(subject);
 
-          // Set the body of the message
-          message.body.setAsync(body);
+      // Set the recipient of the message
+      var recipients = [
+        {
+          emailAddress: {
+            address: recipient
+          }
+        }
+      ];
+      message.to.setAsync(recipients);
 
-          // Send the message
-          message.send(function(asyncResult) {
-            if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
-              console.log("Message sent successfully");
-            } else {
-              console.log("Error sending message: " + asyncResult.error.message);
-            }
-          });
-            });
-      };
+      // Set the body of the message
+      message.body.setAsync(body);
+
+      // Send the message
+      message.send(function(asyncResult) {
+        if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
+          console.log("Message sent successfully");
+        } else {
+          console.log("Error sending message: " + asyncResult.error.message);
+        }
+      });
     }
 
-    unction createEvent(subject, start, end, location, attendees) {
-        
-      Office.initialize = function() {
-        // Wait for the DOM to be loaded
-        $(document).ready(function() {
-          // Create a new appointment
-          var appointment = Office.context.mailbox.item;
-          appointment.itemType = Office.MailboxEnums.ItemType.Appointment;
-          appointment.subject.setAsync(subject);
-
-          // Set the start and end times of the appointment
-          var startDateTime = new Date(start);
-          var endDateTime = new Date(end);
-          appointment.start.setAsync(startDateTime.toISOString());
-          appointment.end.setAsync(endDateTime.toISOString());
-
-          // Set the location of the appointment
-          appointment.location.setAsync(location);
-
-          // Set the attendees of the appointment
-          var attendeesArray = [];
-          for (var i = 0; i < attendees.length; i++) {
-            var attendee = {
-              emailAddress: {
-                address: attendees[i]
-              },
-              type: Office.MailboxEnums.AttendeeType.Required
-            };
-            attendeesArray.push(attendee);
-          }
-          appointment.requiredAttendees.setAsync(attendeesArray);
-
-          // Save the appointment
-          appointment.saveAsync(function(asyncResult) {
-            if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
-              console.log("Appointment created successfully");
-            } else {
-              console.log("Error creating appointment: " + asyncResult.error.message);
-            }
-              });
-            });
-          };
-        }
+    // Attach the click event listener to the send email button
+    $(document).ready(function() {
+      $("#send-email-button").click(sendEmailOnClick);
+    });
 </script>
 
 </html>
