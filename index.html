@@ -11,19 +11,32 @@
     <p>This add-in will insert the text 'Hello world!' in a new message XTX.</p>
     <button id="helloButton">Say hello</button>
     
-    <p>Read messages.</p>
-    <button id="printM">Say hello</button>
+    
 
     <!-- The following image URL tracks diagnostic data for this sample add-in. Please remove the image tag if you reuse this sample in your own code project. -->
     <img src="https://pnptelemetry.azurewebsites.net/pnp-officeaddins/samples/outlook-add-in-hello-world-run" />
 </body>
 
 <script>
+    Office.initialize = function() {
+  // Wait for the DOM to be loaded
+      $(document).ready(function() {
+        // Register an event handler for when a new item is received
+        Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged, { 
+          onChanged: function(eventArgs) {
+            if (eventArgs.item.itemType === Office.MailboxEnums.ItemType.Message) {
+              // Do something with the incoming email
+              console.log("New email received");
+            }
+          }
+        });
+      });
+    };
 
     Office.onReady((info) => {
         if (info.host === Office.HostType.Outlook) {
             document.getElementById("helloButton").onclick = sayHello;
-            document.getElementById("printM").onclick = printM;
+         
         }
         //var item = Office.cast.item.toItemRead(Office.context.mailbox.item);
         //console.log("PRINT OUT");
@@ -32,13 +45,35 @@
     /**
      * Writes 'Hello world!' to a new message body.
      */
-    function printM(){
-        alert("Conquer the world !");
-    }
+ 
     function sayHello() {
+        var message = Office.context.mailbox.item;
+    message.subject.setAsync("Hello from my add-in!");
+
+    // Set the recipients of the message
+    var recipients = [
+      {
+        emailAddress: {
+          address: "y.acoine@gmail.com"
+        }
+      }
+    ];
+    message.to.setAsync(recipients);
+
+    // Set the body of the message
+    message.body.setAsync("This is a test message sent from my add-in.");
+
+    // Send the message
+    message.send(function(asyncResult) {
+      if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
+        console.log("Message sent successfully");
+      } else {
+        console.log("Error sending message: " + asyncResult.error.message);
+      }
+    });
         
         Office.context.mailbox.item.body.setAsync(
-            "Hello this is BluePanda your AI assistant! XXXX",
+            "Hello this is BluePanda your AI assistant!",
             {
                 coercionType: "html", // Write text as HTML
             },
