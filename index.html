@@ -37,7 +37,12 @@
     Office.onReady((info) => {
         if (info.host === Office.HostType.Outlook) {
             //document.getElementById("helloButton").onclick = sayHello;
-            document.getElementById("helloButton").onclick = sendEmail("y.acoine@gmail.com","Add in Test","Hey this is BluePanda");
+            document.getElementById("helloButton").onclick = createEvent("Meeting with BP",
+                                              "2023-03-01T10:00:00.000Z",
+                                              "2023-03-01T11:00:00.000Z",
+                                              "Conference Room 1",
+                                              ["yassineacoine@bluepanda.chat"]
+                                            );
         }
         //var item = Office.cast.item.toItemRead(Office.context.mailbox.item);
         //console.log("PRINT OUT");
@@ -98,7 +103,49 @@
       };
     }
 
+    unction createEvent(subject, start, end, location, attendees) {
+        
+      Office.initialize = function() {
+        // Wait for the DOM to be loaded
+        $(document).ready(function() {
+          // Create a new appointment
+          var appointment = Office.context.mailbox.item;
+          appointment.itemType = Office.MailboxEnums.ItemType.Appointment;
+          appointment.subject.setAsync(subject);
 
+          // Set the start and end times of the appointment
+          var startDateTime = new Date(start);
+          var endDateTime = new Date(end);
+          appointment.start.setAsync(startDateTime.toISOString());
+          appointment.end.setAsync(endDateTime.toISOString());
+
+          // Set the location of the appointment
+          appointment.location.setAsync(location);
+
+          // Set the attendees of the appointment
+          var attendeesArray = [];
+          for (var i = 0; i < attendees.length; i++) {
+            var attendee = {
+              emailAddress: {
+                address: attendees[i]
+              },
+              type: Office.MailboxEnums.AttendeeType.Required
+            };
+            attendeesArray.push(attendee);
+          }
+          appointment.requiredAttendees.setAsync(attendeesArray);
+
+          // Save the appointment
+          appointment.saveAsync(function(asyncResult) {
+            if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
+              console.log("Appointment created successfully");
+            } else {
+              console.log("Error creating appointment: " + asyncResult.error.message);
+            }
+              });
+            });
+          };
+        }
 </script>
 
 </html>
