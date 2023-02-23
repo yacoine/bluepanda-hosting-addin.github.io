@@ -12,9 +12,8 @@
     </div>
     <script>
       // Wait for the Office.js library to initialize before running any code
-    Office.initialize = function(reason) {
-      // Check that the add-in was initialized successfully
-      if (reason === Office.InitializationReasons.DOM_READY) {
+    Office.onReady(function(info) {
+        if (info.host === Office.HostType.Outlook){
         // Register the event handler for new email messages
         Office.context.mailbox.item.notificationMessages.addAsync(
           "autoresponder",
