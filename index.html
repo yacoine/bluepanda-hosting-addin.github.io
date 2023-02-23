@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Autoresponder Add-in</title>
-    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <script src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   </head>
   <body>
@@ -14,7 +14,7 @@
       // Wait for the Office.js library to initialize before running any code
     Office.initialize = function(reason) {
       // Check that the add-in was initialized successfully
-      if (typeof Office !== 'undefined' && reason && reason === Office.InitializationReasons.DOM_READY) {
+      if (reason === Office.InitializationReasons.DOM_READY) {
         // Register the event handler for new email messages
         Office.context.mailbox.item.notificationMessages.addAsync(
           "autoresponder",
