@@ -12,33 +12,34 @@
     </div>
     <script>
       // Wait for the Office.js library to initialize before running any code
-      Office.initialize = function(reason) {
-        // Check that the add-in was initialized successfully
-        if (reason === Office.InitializationReasons.DOM_READY) {
-          // Register the event handler for new email messages
-          Office.context.mailbox.item.notificationMessages.addAsync(
-            "autoresponder",
-            { type: "informationalMessage", message: "Sending auto-response..." },
-            { isPersistent: false },
-            function(result) {
-              // Define the recipient, subject, and body of the email
-              var recipient = Office.context.mailbox.item.from.emailAddress;
-              var subject = "Auto-Response: " + Office.context.mailbox.item.subject;
-              var body = "Thank you for your email. BluePanda will get back to you as soon as possible.";
+    Office.initialize = function(reason) {
+      // Check that the add-in was initialized successfully
+      if (typeof Office !== 'undefined' && reason && reason === Office.InitializationReasons.DOM_READY) {
+        // Register the event handler for new email messages
+        Office.context.mailbox.item.notificationMessages.addAsync(
+          "autoresponder",
+          { type: "informationalMessage", message: "Sending auto-response..." },
+          { isPersistent: false },
+          function(result) {
+            // Define the recipient, subject, and body of the email
+            var recipient = Office.context.mailbox.item.from.emailAddress;
+            var subject = "Auto-Response: " + Office.context.mailbox.item.subject;
+            var body = "Thank you for your email. BluePanda will get back to you as soon as possible.";
 
-              // Create a new message
-              Office.context.mailbox.displayNewMessageForm({
-                toRecipients: [recipient],
-                subject: subject,
-                body: body
-              });
+            // Create a new message
+            Office.context.mailbox.displayNewMessageForm({
+              toRecipients: [recipient],
+              subject: subject,
+              body: body
+            });
 
-              // Dismiss the notification message
-              Office.context.mailbox.item.notificationMessages.removeAsync("autoresponder");
-            }
-          );
-        }
-      };
+            // Dismiss the notification message
+            Office.context.mailbox.item.notificationMessages.removeAsync("autoresponder");
+          }
+        );
+      }
+    };
+
     </script>
   </body>
 </html>
