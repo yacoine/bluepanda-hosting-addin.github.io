@@ -9,6 +9,11 @@
     <div id="container">
       <h1>Autoresponder Add-in</h1>
       <p>This add-in will automatically respond to new emails.</p>
+      <form id="myForm">
+        <label for="message">Message:</label>
+        <textarea id="message" name="message"></textarea><br><br>
+        <button type="button" onclick="insertFormData()">Insert Form Data</button>
+    </form>
     </div>
     <script>
       // Wait for the Office.js library to initialize before running any code
@@ -38,6 +43,14 @@
         );
       }
     });
+      function insertFormData() {
+        Office.context.mailbox.item.body.setSelectedDataAsync(
+            "Name: " + document.getElementById("name").value + "<br>" +
+            "Email: " + document.getElementById("email").value + "<br>" +
+            "Message: " + document.getElementById("message").value,
+            { coercionType: Office.CoercionType.Html }
+        );
+    }
 
     </script>
   </body>
