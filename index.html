@@ -14,9 +14,10 @@
 
       function onItemChanged(eventArgs) {
   // Check if the item is a new email message
+        console.log("onItemChanged function active");
   if (eventArgs && eventArgs.hasOwnProperty("item") && eventArgs.item.itemType === Office.MailboxEnums.ItemType.Message) {
     var item = eventArgs.item;
-
+        console.log("If statement active");
     // Check if the email message is unread
     if (item.isRead === false) {
       // Set the email message as read
