@@ -17,6 +17,7 @@
 
             Office.onReady(function() {
           // Register event handler for incoming messages
+                console.log("Office on Ready");
               Office.context.mailbox.item.addHandlerAsync(
                 Office.EventType.ItemChanged,
                 respondToEmail
@@ -30,6 +31,7 @@
             // Get the sender email address and subject line
             var sender = eventArgs.item.sender.emailAddress;
             var subject = eventArgs.item.subject;
+            console.log("Respond to email function");
 
             // Compose a reply message
             var reply = Office.context.mailbox.item.reply();
