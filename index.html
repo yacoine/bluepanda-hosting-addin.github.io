@@ -11,52 +11,42 @@
     <p>This add-in will insert the text 'Hello world!' in a new message.</p>
     <button id="helloButton">Say hello</button>
   
-        <form id="myForm">
-        <label for="message">Message:</label>
-        <textarea id="message" name="message"></textarea><br><br>
-        <button type="button" onclick="insertFormData()">Insert Form Data</button>
-    </form>
-
-    <!-- The following image URL tracks diagnostic data for this sample add-in. Please remove the image tag if you reuse this sample in your own code project. -->
-    <img src="https://pnptelemetry.azurewebsites.net/pnp-officeaddins/samples/outlook-add-in-hello-world-run" />
 </body>
 
 <script>
 
-    Office.onReady((info) => {
-        if (info.host === Office.HostType.Outlook) {
-            document.getElementById("helloButton").onclick = sayHello;
+            Office.onReady(function() {
+          // Register event handler for incoming messages
+              Office.context.mailbox.item.addHandlerAsync(
+                Office.EventType.ItemChanged,
+                respondToEmail
+              );
+            });
+
+        function respondToEmail(eventArgs) {
+          // Check if the message is an incoming email
+          if (eventArgs.item.itemType === Office.MailboxEnums.ItemType.Message && eventArgs.item.itemClass === 'IPM.Note') {
+
+            // Get the sender email address and subject line
+            var sender = eventArgs.item.sender.emailAddress;
+            var subject = eventArgs.item.subject;
+
+            // Compose a reply message
+            var reply = Office.context.mailbox.item.reply();
+
+            // Set the reply message body
+            reply.body.setAsync(
+              'Thank you for your email. I will get back to you as soon as possible.'
+            );
+
+            // Set the reply message subject
+            reply.subject.setAsync('Re: ' + subject);
+
+            // Send the reply message
+            reply.send();
+          }
         }
-    });
 
-    /**
-     * Writes 'Hello world!' to a new message body.
-     */
-    function sayHello() {
-        Office.context.mailbox.item.body.setAsync(
-            "Hello world!",
-            {
-                coercionType: "html", // Write text as HTML
-            },
-
-            // Callback method to check that setAsync succeeded
-            function (asyncResult) {
-                if (asyncResult.status ==
-                    Office.AsyncResultStatus.Failed) {
-                    write(asyncResult.error.message);
-                }
-            }
-        );
-    }
-  
-  function insertFormData() {
-        Office.context.mailbox.item.body.setSelectedDataAsync(
-            "Name: " + document.getElementById("name").value + "<br>" +
-            "Email: " + document.getElementById("email").value + "<br>" +
-            "Message: " + document.getElementById("message").value,
-            { coercionType: Office.CoercionType.Html }
-        );
-    }
 
 </script>
 </html>
