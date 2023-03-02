@@ -13,8 +13,10 @@
 
       function onItemSelectionChanged(eventArgs) {
         // Check if an email message is selected
+        console.log("Before IF Function item received on.");
         if (eventArgs && eventArgs.item && eventArgs.item.itemType === Office.MailboxEnums.ItemType.Message) {
           // Get the email message
+          console.log("After IF Function item received on.");
           var item = eventArgs.item;
 
           // Check if the email message is unread
@@ -22,7 +24,7 @@
             // Set the email message as read
             item.isRead = true;
             item.saveAsync();
-            console.log("Function item received on.");
+            
             // Reply to the email message
             var reply = item.createReplyAll();
             reply.body.setHtml("<p>Thank you for your message. We will respond as soon as possible.</p>");
@@ -34,6 +36,6 @@
   </head>
   <body>
     <h1>Inbound Email Response Add-in</h1>
-    <p>This add-in automatically responds to incoming email messages. v2</p>
+    <p>This add-in automatically responds to incoming email messages. v3</p>
   </body>
 </html>
