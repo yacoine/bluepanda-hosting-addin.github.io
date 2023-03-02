@@ -9,6 +9,7 @@
         // Register event handler for item selection change
         console.log("Office initialized");
         Office.context.mailbox.addHandlerAsync(Office.EventType.ItemSelectionChanged, onItemSelectionChanged);
+        console.log("Office function running");
       };
 
       function onItemSelectionChanged(eventArgs) {
