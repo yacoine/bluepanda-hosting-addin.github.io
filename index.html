@@ -14,17 +14,8 @@
 </body>
 
 <script>
-
-            Office.onReady(function() {
-          // Register event handler for incoming messages
-                console.log("Office on Ready");
-              Office.context.mailbox.item.addHandlerAsync(
-                Office.EventType.ItemChanged,
-                respondToEmail
-              );
-            });
-
-        function respondToEmail(eventArgs) {
+    
+    function respondToEmail(eventArgs) {
           // Check if the message is an incoming email
           if (eventArgs.item.itemType === Office.MailboxEnums.ItemType.Message && eventArgs.item.itemClass === 'IPM.Note') {
 
@@ -48,6 +39,17 @@
             reply.send();
           }
         }
+
+      Office.onReady(function() {
+          // Register event handler for incoming messages
+              console.log("Office on Ready");
+              Office.context.mailbox.item.addHandlerAsync(
+                Office.EventType.ItemChanged,
+                respondToEmail
+              );
+            });
+
+        
 
 
 </script>
