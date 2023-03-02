@@ -7,6 +7,7 @@
     <script type="text/javascript">
       Office.initialize = function() {
         // Register event handler for item selection change
+        console.log("Office initialized");
         Office.context.mailbox.addHandlerAsync(Office.EventType.ItemSelectionChanged, onItemSelectionChanged);
       };
 
@@ -21,7 +22,7 @@
             // Set the email message as read
             item.isRead = true;
             item.saveAsync();
-
+            console.log("Function item received on.");
             // Reply to the email message
             var reply = item.createReplyAll();
             reply.body.setHtml("<p>Thank you for your message. We will respond as soon as possible.</p>");
@@ -33,6 +34,6 @@
   </head>
   <body>
     <h1>Inbound Email Response Add-in</h1>
-    <p>This add-in automatically responds to incoming email messages.</p>
+    <p>This add-in automatically responds to incoming email messages. v2</p>
   </body>
 </html>
