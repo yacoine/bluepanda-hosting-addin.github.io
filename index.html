@@ -1,56 +1,38 @@
-<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Inbound Email Response Add-in: BP</title>
+    <script src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      Office.initialize = function() {
+        // Register event handler for item selection change
+        Office.context.mailbox.addHandlerAsync(Office.EventType.ItemSelectionChanged, onItemSelectionChanged);
+      };
 
-<head>
-    <!-- Office JavaScript API -->
-    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
-</head>
+      function onItemSelectionChanged(eventArgs) {
+        // Check if an email message is selected
+        if (eventArgs && eventArgs.item && eventArgs.item.itemType === Office.MailboxEnums.ItemType.Message) {
+          // Get the email message
+          var item = eventArgs.item;
 
-<body>
-    <p>This add-in will respond automatically to emails..</p>
-    <button id="helloButton">Say hello</button>
-  
-</body>
+          // Check if the email message is unread
+          if (item.isRead === false) {
+            // Set the email message as read
+            item.isRead = true;
+            item.saveAsync();
 
-<script>
-    
-    function respondToEmail(eventArgs) {
-          // Check if the message is an incoming email
-          if (eventArgs.item.itemType === Office.MailboxEnums.ItemType.Message && eventArgs.item.itemClass === 'IPM.Note') {
-
-            // Get the sender email address and subject line
-            var sender = eventArgs.item.sender.emailAddress;
-            var subject = eventArgs.item.subject;
-            console.log("Respond to email function");
-
-            // Compose a reply message
-            var reply = Office.context.mailbox.item.reply();
-
-            // Set the reply message body
-            reply.body.setAsync(
-              'Thank you for your email. I will get back to you as soon as possible.'
-            );
-
-            // Set the reply message subject
-            reply.subject.setAsync('Re: ' + subject);
-
-            // Send the reply message
+            // Reply to the email message
+            var reply = item.createReplyAll();
+            reply.body.setHtml("<p>Thank you for your message. We will respond as soon as possible.</p>");
             reply.send();
           }
         }
-
-      Office.onReady(function() {
-          // Register event handler for incoming messages
-              console.log("Office on Ready");
-              Office.context.mailbox.item.addHandlerAsync(
-                Office.EventType.ItemChanged,
-                respondToEmail
-              );
-            });
-
-        
-
-
-</script>
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Inbound Email Response Add-in</h1>
+    <p>This add-in automatically responds to incoming email messages.</p>
+  </body>
 </html>
