@@ -8,31 +8,28 @@
       Office.initialize = function() {
         // Register event handler for item selection change
         console.log("Office initialized");
-        Office.context.mailbox.addHandlerAsync(Office.EventType.ItemSelectionChanged, onItemSelectionChanged);
+        Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged, onItemChanged);
         console.log("Office function running");
       };
 
-      function onItemSelectionChanged(eventArgs) {
-        // Check if an email message is selected
-        console.log("Before IF Function item received on.");
-        if (eventArgs && eventArgs.item && eventArgs.item.itemType === Office.MailboxEnums.ItemType.Message) {
-          // Get the email message
-          console.log("After IF Function item received on.");
-          var item = eventArgs.item;
+      function onItemChanged(eventArgs) {
+  // Check if the item is a new email message
+  if (eventArgs && eventArgs.hasOwnProperty("item") && eventArgs.item.itemType === Office.MailboxEnums.ItemType.Message) {
+    var item = eventArgs.item;
 
-          // Check if the email message is unread
-          if (item.isRead === false) {
-            // Set the email message as read
-            item.isRead = true;
-            item.saveAsync();
-            
-            // Reply to the email message
-            var reply = item.createReplyAll();
-            reply.body.setHtml("<p>Thank you for your message. We will respond as soon as possible.</p>");
-            reply.send();
-          }
-        }
-      }
+    // Check if the email message is unread
+    if (item.isRead === false) {
+      // Set the email message as read
+      item.isRead = true;
+      item.saveAsync();
+
+      // Reply to the email message
+      var reply = item.createReplyAll();
+      reply.body.setHtml("<p>Thank you for your message. We will respond as soon as possible.</p>");
+      reply.send();
+    }
+  }
+}
     </script>
   </head>
   <body>
